@@ -9,10 +9,14 @@ msg = '''
 |           Multi Dig           |
 +-------------------------------+
 |   Usage: Add domains per line |
-|   type "dig" to dig           |
-|   type "show" to show cache   |
-|   type "clear" to clear cache |
-|   type "exit" to quit         |
+|                               |
+|   Supported commands:         |
+|   type "dig"   - dig list     |
+|   type "show"  - show list    |
+|   type "clear" - clear list   |
+|   type "whois" - whois list   |
+|   type "exit"  - quit         |
+|   type "?"	 - help menu 
 +-------------------------------+
 '''
 print msg
@@ -34,18 +38,35 @@ while loop != 0:
 			os.system('dig ns '+x+' +short')
 			print '\n[+]TXT records for '+x
 			os.system('dig txt '+x+' +short')
+	elif query == 'show':
+		if 'show' in collection:
+			collection.remove('show')
+		print '[+]Displaying current list:'
+		for x in collection:
+			print x
+		print '[+]Done.'
 
 	elif query == 'exit':
 		loop = 0
 		print '[-]Bye Bye'
 
+	elif query == 'whois':
+		if 'whois' in collection:
+			collection.remove('whois')
+		for x in collection:
+			print '\n\n[+]Initiating whois search on '+x
+			os.system('whois '+x)
+			print '[+]Whois search done for domain:'+x
+			raw_input(':enter')
+		print '[+]End of list.'
+
 	elif query == 'clear':
 		collection=[]
 		os.system('clear')
 		print msg
-		print '[+]Cache cleared.\n'
+		print '[+]List cleared.\n'
 
 	elif query == '?':
 		if '?' in collection:
 			collection.remove('?')
-			print msg
+		print msg
